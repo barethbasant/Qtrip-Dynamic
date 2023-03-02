@@ -5,6 +5,9 @@ import config from "../conf/index.js";
 function getCityFromURL(search) {
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
+ if(search) {
+  return search.split("=")[1]
+ }
 
 }
 
@@ -12,6 +15,13 @@ function getCityFromURL(search) {
 async function fetchAdventures(city) {
   // TODO: MODULE_ADVENTURES
   // 1. Fetch adventures using the Backend API and return the data
+  try {
+    const response = await fetch(`${config.backendEndpoint}/adventures?city=${city}`);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return null;
+  }  
 
 }
 
@@ -19,6 +29,35 @@ async function fetchAdventures(city) {
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
+ 
+  const divEl = document.createElement("div");   
+  divEl.className = "row ";
+  adventures.forEach(el => {
+   
+    divEl.innerHTML += `
+    <div class="col-12 col-sm-6 col-lg-3 mb-3">
+    <a  href="/detail/?adventure=${el.id}"  id="${el.id}" >
+    <div class="card activity-card">
+    <img src="${el.image}">
+    <div class="category-banner">${el.category}</div>
+    <div class="card-body col-md-12 mt-2">
+    <div class="d-flex justify-content-between">
+    <p>${el.name}</p>
+    <p>₹ ${el.costPerHead}</p>
+    </div>
+    <div class="d-flex justify-content-between">
+    <p>Duration</p
+    ><p>${el.duration}</p>
+    </div>
+    </div>
+    </div>
+    </a>
+    </div>
+  `;
+
+  }) 
+
+  document.getElementById("category-list").appendChild(divEl);
 
 }
 
