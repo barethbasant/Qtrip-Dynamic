@@ -57,7 +57,7 @@ function addAdventureToDOM(adventures) {
 
   }) 
 
-  document.getElementById("category-list").appendChild(divEl);
+  document.getElementById("data").appendChild(divEl);
 
 }
 
@@ -66,12 +66,27 @@ function filterByDuration(list, low, high) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on Duration and return filtered list
 
+  let filteredList=list.filter(function(el){
+    return (el.duration>=low && el.duration<=high);
+  })
+  return filteredList;
+
 }
 
 //Implementation of filtering by category which takes in a list of adventures, list of categories to be filtered upon and returns a filtered list of adventures.
 function filterByCategory(list, categoryList) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on their Category and return filtered list
+
+
+
+  let filterList=[];
+  console.log(list);
+  list.filter(function (el) {
+    if(categoryList.includes(el.category))
+    filterList.push(el);   
+      });
+      return filterList;
 
 }
 
@@ -87,16 +102,29 @@ function filterFunction(list, filters) {
   // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
   // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
 
+  let filteredlist =[]
+  let arr=filters["duration"].split("-");
 
+  if(filters["category"].length>0&&filters["duration"].length>0){
+
+    filteredlist=filterByCategory(list,filters.category)
+    filteredlist=filterByDuration(filteredlist,parseInt(arr[0]),parseInt(arr[1]))
+   }else if(filters["category"].length>0){
+     filteredlist=filterByCategory(list,filters.category);
+   }else if(filters["duration"].length>0){
+    filteredlist=filterByDuration(list,parseInt(arr[0]),parseInt(arr[1]))
+   }else{
+     return list;
+   }
   // Place holder for functionality to work in the Stubs
-  return list;
+  return filteredlist;
 }
 
 //Implementation of localStorage API to save filters to local storage. This should get called everytime an onChange() happens in either of filter dropdowns
 function saveFiltersToLocalStorage(filters) {
   // TODO: MODULE_FILTERS
   // 1. Store the filters as a String to localStorage
-
+localStorage.setItem("filters", JSON.stringify(filters));
   return true;
 }
 
@@ -107,7 +135,8 @@ function getFiltersFromLocalStorage() {
 
 
   // Place holder for functionality to work in the Stubs
-  return null;
+  let filterData = JSON.parse(localStorage.getItem('filters'));
+  return filterData;
 }
 
 //Implementation of DOM manipulation to add the following filters to DOM :
@@ -117,6 +146,23 @@ function getFiltersFromLocalStorage() {
 function generateFilterPillsAndUpdateDOM(filters) {
   // TODO: MODULE_FILTERS
   // 1. Use the filters given as input, update the Duration Filter value and Generate Category Pills
+
+  let categoryList=filters["category"];
+   let li=[];
+  for(let i=0;i<categoryList.length;i++)
+  {
+   // console.log(categoryList[i]);
+    li.push(categoryList[i]);
+  }
+  console.log(li);
+  for(let i=0;i<li.length;i++)
+  {
+    console.log(li[i]);
+    const div=document.createElement("div");
+    div.className ="category-filter";
+    div.innerText=li[i];
+    document.getElementById("category-list").append(div);
+  }
 
 }
 export {
