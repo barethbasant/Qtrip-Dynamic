@@ -36,7 +36,7 @@ function addAdventureToDOM(adventures) {
    
     divEl.innerHTML += `
     <div class="col-12 col-sm-6 col-lg-3 mb-3">
-    <a  href="/detail/?adventure=${el.id}"  id="${el.id}" >
+    <a  href="../adventures/detail/?adventure=${el.id}"  id="${el.id}" >
     <div class="card activity-card">
     <img src="${el.image}">
     <div class="category-banner">${el.category}</div>
@@ -132,15 +132,11 @@ localStorage.setItem("filters", JSON.stringify(filters));
 function getFiltersFromLocalStorage() {
   // TODO: MODULE_FILTERS
   // 1. Get the filters from localStorage and return String read as an object
-
-
-  // Place holder for functionality to work in the Stubs
   let filterData = JSON.parse(localStorage.getItem('filters'));
+ 
+  // Place holder for functionality to work in the Stubs
   return filterData;
 }
-
-//Implementation of DOM manipulation to add the following filters to DOM :
-// 1. Update duration filter with correct value
 // 2. Update the category pills on the DOM
 
 function generateFilterPillsAndUpdateDOM(filters) {
